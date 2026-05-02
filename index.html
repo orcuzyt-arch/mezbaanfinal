@@ -40,41 +40,148 @@ body{
 ::-webkit-scrollbar-thumb{background:var(--crimson);border-radius:3px}
 
 /* ════ NAV ════ */
+.navbar-wrap{
+  position:absolute;top:0;left:0;right:0;z-index:200;
+  width:100%;
+  display:flex;justify-content:center;
+  padding:14px 24px;
+  pointer-events:none;
+  background:transparent;
+}
 .navbar{
-  position:sticky;top:0;z-index:200;
-  background:var(--crimson);
+  pointer-events:all;
+  width:100%;max-width:1100px;
   display:flex;align-items:center;justify-content:space-between;
-  padding:0 60px;height:64px;
-  box-shadow:0 4px 24px rgba(176,28,46,0.25);
+  height:56px;
+  padding:0 20px;
+  background:rgba(140,21,36,0.18);
+  border:1px solid rgba(255,255,255,0.18);
+  border-radius:12px;
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  transition:all .35s ease;
+}
+.navbar.scrolled{
+  background:rgba(120,14,28,0.88);
+  border-color:rgba(255,255,255,0.14);
+  box-shadow:0 8px 32px rgba(28,9,9,0.32);
 }
 .nav-logo{
   display:flex;align-items:center;gap:10px;
-  text-decoration:none;
+  text-decoration:none;flex-shrink:0;
 }
 .nav-logo-img{
-  width:38px;height:38px;border-radius:50%;
+  width:32px;height:32px;border-radius:50%;
   object-fit:cover;
-  border:2px solid rgba(255,255,255,0.5);
+  border:2px solid rgba(255,255,255,0.45);
 }
 .nav-logo-text{
   font-family:'DM Serif Display',serif;
-  font-size:1.25rem;color:#fff;letter-spacing:.3px;
+  font-size:1.1rem;color:#fff;letter-spacing:.3px;
 }
-.nav-links{display:flex;align-items:center;gap:28px}
-.nav-links a{
-  font-size:.8rem;font-weight:600;letter-spacing:1.2px;
-  text-transform:uppercase;color:rgba(255,255,255,0.82);
-  text-decoration:none;transition:color .2s;
+
+/* ── Sliding pill nav ── */
+.nav-pill-list{
+  position:relative;
+  display:flex;align-items:center;
+  list-style:none;
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.14);
+  border-radius:100px;
+  padding:4px;
+  gap:0;
 }
-.nav-links a:hover{color:#fff}
+.nav-pill-list li{
+  position:relative;z-index:2;
+  cursor:pointer;
+  padding:6px 16px;
+  font-size:.72rem;font-weight:600;letter-spacing:1.2px;
+  text-transform:uppercase;
+  color:rgba(255,255,255,0.78);
+  text-decoration:none;
+  white-space:nowrap;
+  border-radius:100px;
+  transition:color .2s;
+}
+.nav-pill-list li:hover{color:#fff}
+.nav-pill-list li.active{color:#fff}
+
+/* The sliding cursor pill */
+.nav-pill-cursor{
+  position:absolute;z-index:1;
+  top:4px;height:calc(100% - 8px);
+  background:rgba(255,255,255,0.18);
+  border-radius:100px;
+  pointer-events:none;
+  transition:left .22s cubic-bezier(.4,0,.2,1), width .22s cubic-bezier(.4,0,.2,1), opacity .18s ease;
+}
+
+/* Order Now CTA */
 .nav-cta{
-  background:rgba(255,255,255,0.15) !important;
-  border:1px solid rgba(255,255,255,0.4);
-  color:#fff !important;
-  padding:8px 18px;border-radius:3px;
-  transition:background .2s !important;
+  flex-shrink:0;
+  font-size:.72rem;font-weight:700;letter-spacing:1px;
+  text-transform:uppercase;
+  background:rgba(255,255,255,0.15);
+  border:1px solid rgba(255,255,255,0.3);
+  color:#fff;
+  padding:8px 18px;border-radius:100px;
+  text-decoration:none;
+  transition:background .2s;
+  white-space:nowrap;
 }
-.nav-cta:hover{background:rgba(255,255,255,0.25) !important}
+.nav-cta:hover{background:rgba(255,255,255,0.26)}
+
+/* ── Mobile hamburger ── */
+.nav-hamburger{
+  display:none;
+  flex-direction:column;justify-content:center;gap:5px;
+  width:36px;height:36px;
+  background:rgba(255,255,255,0.1);
+  border:1px solid rgba(255,255,255,0.25);
+  border-radius:6px;cursor:pointer;padding:8px;
+  transition:background .2s;
+}
+.nav-hamburger:hover{background:rgba(255,255,255,0.2)}
+.nav-hamburger span{
+  display:block;height:2px;background:#fff;border-radius:2px;
+  transform-origin:center;
+  transition:transform .3s ease, opacity .3s ease, width .3s ease;
+}
+.nav-hamburger span:nth-child(2){width:70%;margin-left:auto}
+.nav-hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-hamburger.open span:nth-child(2){opacity:0;transform:translateX(8px)}
+.nav-hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* ── Mobile drawer ── */
+.nav-drawer{
+  display:none;
+  position:fixed;top:0;left:0;right:0;bottom:0;z-index:190;
+  background:rgba(80,8,18,0.97);
+  backdrop-filter:blur(12px);
+  flex-direction:column;justify-content:center;align-items:center;gap:12px;
+  opacity:0;pointer-events:none;
+  transition:opacity .3s ease;
+}
+.nav-drawer.open{opacity:1;pointer-events:all}
+.nav-drawer a{
+  font-family:'DM Serif Display',serif;
+  font-size:2rem;color:rgba(255,255,255,0.85);
+  text-decoration:none;padding:8px 0;
+  transition:color .2s;
+}
+.nav-drawer a:hover{color:#fff}
+.nav-drawer .drawer-cta{
+  margin-top:16px;
+  font-family:'Outfit',sans-serif;
+  font-size:.85rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  background:rgba(255,255,255,0.12);
+  border:1px solid rgba(255,255,255,0.3);
+  color:#fff;padding:12px 32px;border-radius:100px;
+}
+.nav-drawer-close{
+  position:absolute;top:20px;right:24px;
+  background:none;border:none;color:#fff;font-size:1.6rem;cursor:pointer;opacity:.7;
+}
 
 /* ════ HERO ════ */
 @keyframes aurora-move {
@@ -83,7 +190,7 @@ body{
 }
 
 .hero{
-  min-height:92vh;
+  min-height:100vh;
   background:var(--crimson2);
   display:flex;align-items:center;
   position:relative;
@@ -617,35 +724,60 @@ footer{
   .branches-section,.cta-section,footer{padding-left:32px;padding-right:32px}
   .rev-head{padding:0 32px}
   .footer-top{grid-template-columns:1fr 1fr;gap:32px}
-  .navbar{padding:0 24px}
 }
 @media(max-width:700px){
   .hero-inner{padding:60px 24px}
   .branches-grid{grid-template-columns:1fr}
   .footer-top{grid-template-columns:1fr}
   .footer-bottom{flex-direction:column;text-align:center}
-  .nav-links a:not(.nav-cta){display:none}
+  .nav-pill-list{display:none}
+  #nav-cta-btn{display:none}
+  .nav-hamburger{display:flex}
+  .nav-drawer{display:flex}
 }
 </style>
 </head>
 <body>
 
+<!-- ═══ HERO WRAP (navbar overlays hero) ═══ -->
+<div style="position:relative">
+
 <!-- ═══ NAV ═══ -->
-<header class="navbar">
+<div class="navbar-wrap">
+<header class="navbar" id="navbar">
   <a class="nav-logo" href="#">
     <img class="nav-logo-img"
       src="https://mezbaan-lake.vercel.app/_next/image?url=%2Fmezbaan%2Flogo.jpg&w=256&q=75"
       alt="Mezbaan"/>
     <span class="nav-logo-text">Mezbaan</span>
   </a>
-  <nav class="nav-links">
-    <a href="#about">About</a>
-    <a href="#menu">Menu</a>
-    <a href="#reviews">Reviews</a>
-    <a href="#branches">Branches</a>
-    <a href="https://hungerstation.com/sa-en/restaurant/mezbaan/dammam/uhud/64146" target="_blank" class="nav-cta">Order Now</a>
-  </nav>
+
+  <!-- Sliding pill nav (desktop) -->
+  <ul class="nav-pill-list" id="nav-pill-list">
+    <div class="nav-pill-cursor" id="nav-pill-cursor" style="opacity:0;left:4px;width:60px;"></div>
+    <li data-href="#home">Home</li>
+    <li data-href="#menu">Menu</li>
+    <li data-href="#reviews">Reviews</li>
+    <li data-href="#branches">Branches</li>
+  </ul>
+
+  <a href="https://hungerstation.com/sa-en/restaurant/mezbaan/dammam/uhud/64146" target="_blank" class="nav-cta" id="nav-cta-btn">Order Now</a>
+
+  <button class="nav-hamburger" id="hamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
 </header>
+</div>
+
+<!-- Mobile Drawer -->
+<div class="nav-drawer" id="nav-drawer">
+  <button class="nav-drawer-close" id="drawer-close" aria-label="Close menu">✕</button>
+  <a href="#home" class="drawer-link">Home</a>
+  <a href="#menu" class="drawer-link">Menu</a>
+  <a href="#reviews" class="drawer-link">Reviews</a>
+  <a href="#branches" class="drawer-link">Branches</a>
+  <a href="https://hungerstation.com/sa-en/restaurant/mezbaan/dammam/uhud/64146" target="_blank" class="drawer-cta">Order Now</a>
+</div>
 
 <!-- ═══ HERO ═══ -->
 <section class="hero" id="home">
@@ -681,6 +813,11 @@ footer{
     </div>
   </div>
 </section>
+
+</div><!-- /hero-wrap -->
+
+<!-- Sticky sentinel: once this is visible navbar becomes sticky -->
+<div id="nav-sentinel" style="position:absolute;top:0;height:1px;pointer-events:none"></div>
 
 <!-- MARQUEE -->
 <div class="marquee">
@@ -1017,7 +1154,93 @@ const obs = new IntersectionObserver(entries => {
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
-// Review carousel drag
+// ── Navbar: absolute over hero → sticky after hero ──
+const navbar    = document.getElementById('navbar');
+const navWrap   = navbar.closest('.navbar-wrap');
+const hero      = document.getElementById('home');
+
+function updateNav() {
+  const heroBottom = hero.getBoundingClientRect().bottom;
+  const scrolled   = window.scrollY > 10;
+
+  if (heroBottom <= 0) {
+    // Hero fully scrolled past — switch to sticky
+    navWrap.style.position = 'fixed';
+    navWrap.style.top      = '0';
+    navbar.classList.add('scrolled');
+  } else if (scrolled) {
+    // Inside hero but scrolled — show pill as floating
+    navWrap.style.position = 'absolute';
+    navWrap.style.top      = window.scrollY + 'px';
+    navbar.classList.add('scrolled');
+  } else {
+    // At the very top
+    navWrap.style.position = 'absolute';
+    navWrap.style.top      = '0';
+    navbar.classList.remove('scrolled');
+  }
+}
+
+window.addEventListener('scroll', updateNav, { passive: true });
+updateNav();
+
+// ── Sliding pill nav ──
+const pillList   = document.getElementById('nav-pill-list');
+const cursor     = document.getElementById('nav-pill-cursor');
+const pillItems  = pillList.querySelectorAll('li');
+
+function moveCursorTo(el) {
+  cursor.style.opacity = '1';
+  cursor.style.left    = el.offsetLeft + 'px';
+  cursor.style.width   = el.offsetWidth + 'px';
+}
+
+pillItems.forEach(li => {
+  li.addEventListener('mouseenter', () => moveCursorTo(li));
+  li.addEventListener('click', () => {
+    pillItems.forEach(i => i.classList.remove('active'));
+    li.classList.add('active');
+    const target = li.dataset.href;
+    if (target) document.querySelector(target)?.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+pillList.addEventListener('mouseleave', () => {
+  // return cursor to active item if any, else hide
+  const active = pillList.querySelector('li.active');
+  if (active) moveCursorTo(active);
+  else cursor.style.opacity = '0';
+});
+
+// Highlight active pill on scroll
+const sections = { '#home': document.getElementById('home'), '#menu': document.getElementById('menu'), '#reviews': document.getElementById('reviews'), '#branches': document.getElementById('branches') };
+window.addEventListener('scroll', () => {
+  let current = '#home';
+  for (const [id, el] of Object.entries(sections)) {
+    if (el && el.getBoundingClientRect().top < window.innerHeight * 0.45) current = id;
+  }
+  pillItems.forEach(li => {
+    const isActive = li.dataset.href === current;
+    li.classList.toggle('active', isActive);
+    if (isActive) moveCursorTo(li);
+  });
+}, { passive: true });
+
+// Mobile drawer
+const hamburger   = document.getElementById('hamburger');
+const drawer      = document.getElementById('nav-drawer');
+const drawerClose = document.getElementById('drawer-close');
+
+function openDrawer()  { drawer.classList.add('open'); hamburger.classList.add('open'); document.body.style.overflow='hidden'; }
+function closeDrawer() { drawer.classList.remove('open'); hamburger.classList.remove('open'); document.body.style.overflow=''; }
+
+hamburger.addEventListener('click', () => drawer.classList.contains('open') ? closeDrawer() : openDrawer());
+drawerClose.addEventListener('click', closeDrawer);
+drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeDrawer));
+
+
+
+
 const track = document.getElementById('revTrack');
 let drag = false, startX = 0, offset = 0;
 track.addEventListener('mousedown', e => {
